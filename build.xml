@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="script-pack" default="build library">
+	<property name="NAME" value="script-pack" />
+	<property name="VERSION" value="1.0.0" />
+	<property name="BUILD" value="../build" />
+
+	<property name="JAR" value="${BUILD}/${NAME}-${VERSION}.jar" />
+	<property name="API" value="${BUILD}/api/${NAME}" />
+
+	<property name="SRC" value="src" />
+	<property name="BIN" value="bin" />
+
+	<target name="all">
+		<antcall target="build library" />
+		<antcall target="generate apidoc" />
+	</target>
+
+	<target name="build library">
+		<jar destfile="${JAR}">
+			<zipfileset dir="${BIN}" includes="js/tools/script/pack/*.class" />
+		</jar>
+	</target>
+
+	<target name="generate apidoc">
+		<delete dir="${API}" />
+		<javadoc destdir="${API}" private="yes">
+			<packageset dir="src">
+			</packageset>
+			<link href="http://docs.oracle.com/javase/6/docs/api/" />
+			<link href="http://docs.oracle.com/javase/6/docs/jdk/api/javadoc/doclet/" />
+			<link href="http://api.js-lib.com/server/" />
+		</javadoc>
+	</target>
+
+	<target name="clean all">
+		<delete file="${JAR}" verbose="yes" failonerror="no" />
+		<delete includeemptydirs="true" verbose="yes" failonerror="no">
+			<fileset dir="${API}" />
+		</delete>
+	</target>
+</project>
